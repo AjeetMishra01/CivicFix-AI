@@ -4,8 +4,12 @@ import API from '../../services/api';
 import { AlertCircle, CheckCircle2, ClipboardList, Filter, MapPin, Search, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import MapPicker, { geocodeAddress } from '../../components/common/MapPicker';
+import ThemeToggle from '../../components/common/ThemeToggle';
+import useTheme from '../../hooks/useTheme';
+import { formatStatus } from '../../utils/status';
 
 const CitizenDashboard = () => {
+  const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [complaints, setComplaints] = useState([]);
@@ -91,7 +95,8 @@ const CitizenDashboard = () => {
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-brand-600">Citizen portal</p>
             <h1 className="text-3xl font-semibold text-slate-800">Welcome, {user?.fullName}</h1>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
             <button className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium" onClick={logout}>Logout</button>
             <button className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium" onClick={() => navigate('/citizen/my-complaints')}>My Complaints</button>
             <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white" onClick={() => setShowModal(true)}>Raise Complaint</button>
@@ -134,13 +139,13 @@ const CitizenDashboard = () => {
 
         <div className="grid gap-4 md:grid-cols-2">
           {filteredComplaints.map((complaint) => (
-            <div key={complaint._id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div key={complaint._id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-sm">
               <div className="flex justify-between items-start gap-3">
                 <div>
                   <p className="text-sm text-brand-600 font-medium">{complaint.category}</p>
                   <h3 className="text-lg font-semibold text-slate-800">{complaint.title}</h3>
                 </div>
-                <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">{complaint.status}</span>
+                <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">{formatStatus(complaint.status)}</span>
               </div>
               <p className="text-sm text-slate-600 mt-3">{complaint.description}</p>
               <div className="flex items-center gap-2 mt-4 text-sm text-slate-500"><MapPin size={16} /> {complaint.location}</div>
@@ -217,7 +222,7 @@ const CitizenDashboard = () => {
               <p><span className="font-medium">Description:</span> {selectedComplaint.description}</p>
               <p><span className="font-medium">Location:</span> {selectedComplaint.location}</p>
               <p><span className="font-medium">Address:</span> {selectedComplaint.address || 'Not provided'}</p>
-              <p><span className="font-medium">Status:</span> {selectedComplaint.status}</p>
+              <p><span className="font-medium">Status:</span> {formatStatus(selectedComplaint.status)}</p>
               <p><span className="font-medium">Department:</span> {selectedComplaint.department?.name || 'Not assigned'}</p>
               <p><span className="font-medium">Remarks:</span> {selectedComplaint.remarks?.join(', ') || 'No remarks yet'}</p>
               <p><span className="font-medium">Created:</span> {new Date(selectedComplaint.createdAt).toLocaleString()}</p>

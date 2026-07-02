@@ -2,8 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import API from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { Building2, LayoutDashboard, ShieldCheck, Users } from 'lucide-react';
+import ThemeToggle from '../../components/common/ThemeToggle';
+import useTheme from '../../hooks/useTheme';
+import { formatStatus } from '../../utils/status';
 
 const AdminDashboard = () => {
+  const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
   const [complaints, setComplaints] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -93,12 +97,15 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <header className="flex flex-wrap justify-between items-start md:items-center gap-4 mb-6">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-brand-600">Admin console</p>
             <h1 className="text-3xl font-semibold text-slate-800">Platform management</h1>
           </div>
-          <button className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium" onClick={logout}>Logout</button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+            <button className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium" onClick={logout}>Logout</button>
+          </div>
         </header>
 
         <div className="grid md:grid-cols-3 gap-4 mb-6">
@@ -145,7 +152,7 @@ const AdminDashboard = () => {
                   <p className="font-medium">{complaint.title}</p>
                   <p className="text-sm text-slate-500">{complaint.citizen?.fullName} • {complaint.department?.name}</p>
                 </div>
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold">{complaint.status}</span>
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold">{formatStatus(complaint.status)}</span>
               </div>
             ))}
           </div>

@@ -5,6 +5,7 @@ import CitizenDashboard from './pages/citizen/CitizenDashboard';
 import MyComplaintsPage from './pages/citizen/MyComplaintsPage';
 import DepartmentDashboard from './pages/department/DepartmentDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import useTheme from './hooks/useTheme';
 
 const ProtectedRoute = ({ role, children }) => {
   const { user, loading } = useAuth();
@@ -28,6 +29,8 @@ const AppShell = () => {
 };
 
 function App() {
+  useTheme();
+
   return (
     <AuthProvider>
       <BrowserRouter>
