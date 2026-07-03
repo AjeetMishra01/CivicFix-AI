@@ -15,13 +15,10 @@ const createComplaint = async (req, res) => {
         complaint: description 
       }
     );
-    console.log(aiResponse.data);
 
     const predictedDepartment=await Department.findOne({
       name: aiResponse.data.department
     });
-
-    console.log("Department Found:", predictedDepartment);
 
     if(!predictedDepartment){
       return res.status(404).json({message: "Predicted Department not found"});
