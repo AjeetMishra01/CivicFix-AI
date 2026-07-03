@@ -12,9 +12,11 @@ df=pd.read_csv("dataset/combined_data.csv")
 le=LabelEncoder()
 le.fit(df["department"])
 
-tokenizer=AutoTokenizer.from_pretrained("models/civicfix_department_model")
+MODEL_NAME = "AjeetMishra01/civicfix-ai-model"
 
-model=AutoModelForSequenceClassification.from_pretrained("models/civicfix_department_model")
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
 model.eval()
 

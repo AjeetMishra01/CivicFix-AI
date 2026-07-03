@@ -10,7 +10,7 @@ const createComplaint = async (req, res) => {
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
 
     const aiResponse=await axios.post(
-      "http://127.0.0.1:8000/predict",
+      `${process.env.AI_SERVICE_URL}/predict`,
       { 
         complaint: description 
       }
