@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Building2, LayoutDashboard, ShieldCheck } from 'lucide-react';
 import API from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
-import { Building2, LayoutDashboard, ShieldCheck, Users } from 'lucide-react';
 import ThemeToggle from '../../components/common/ThemeToggle';
+import Toast from '../../components/common/Toast';
 import useTheme from '../../hooks/useTheme';
 import { formatStatus } from '../../utils/status';
 
@@ -18,6 +19,7 @@ const AdminDashboard = () => {
   const [departmentError, setDepartmentError] = useState('');
   const [officerForm, setOfficerForm] = useState({ fullName: '', email: '', password: '', department: '' });
   const [departmentForm, setDepartmentForm] = useState({ name: '', code: '', description: '' });
+  const [toastMessage, setToastMessage] = useState('');
 
   const fetchData = async () => {
     const [complaintsRes, departmentsRes] = await Promise.all([API.get('/complaints/all'), API.get('/departments')]);
@@ -40,12 +42,14 @@ const AdminDashboard = () => {
     await API.post('/departments', departmentForm);
     setDepartmentForm({ name: '', code: '', description: '' });
     fetchData();
+    setToastMessage('Department created successfully');
   };
 
   const handleOfficer = async (e) => {
     e.preventDefault();
     await API.post('/departments/officers', officerForm);
     setOfficerForm({ fullName: '', email: '', password: '', department: '' });
+    setToastMessage('Officer created successfully');
   };
 
   const openDepartments = () => {
@@ -97,6 +101,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
         <header className="flex flex-wrap justify-between items-start md:items-center gap-4 mb-6">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-brand-600">Admin console</p>

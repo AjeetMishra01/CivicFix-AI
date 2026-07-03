@@ -5,6 +5,7 @@ import { AlertCircle, CheckCircle2, ClipboardList, Filter, MapPin, Search, Star 
 import { useNavigate } from 'react-router-dom';
 import MapPicker, { geocodeAddress } from '../../components/common/MapPicker';
 import ThemeToggle from '../../components/common/ThemeToggle';
+import Toast from '../../components/common/Toast';
 import useTheme from '../../hooks/useTheme';
 import { formatStatus } from '../../utils/status';
 
@@ -21,6 +22,7 @@ const CitizenDashboard = () => {
   const [locationError, setLocationError] = useState('');
   const [feedback, setFeedback] = useState({ rating: 5, message: '' });
   const [uploadFile, setUploadFile] = useState(null);
+  const [toastMessage, setToastMessage] = useState('');
 
   const fetchComplaints = async () => {
     const res = await API.get('/complaints');
@@ -56,6 +58,7 @@ const CitizenDashboard = () => {
     setUploadFile(null);
     setLocationError('');
     fetchComplaints();
+    setToastMessage('Complaint submitted successfully');
   };
 
   const handleGeocodeAddress = async () => {
@@ -90,6 +93,7 @@ const CitizenDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-brand-600">Citizen portal</p>
