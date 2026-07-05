@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import ThemeToggle from '../../components/common/ThemeToggle';
 import Toast from '../../components/common/Toast';
 import useTheme from '../../hooks/useTheme';
-import { formatStatus } from '../../utils/status';
+import { formatStatus, sortComplaintsBySeverity } from '../../utils/status';
 
 const AdminDashboard = () => {
   const { theme, toggleTheme } = useTheme();
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     const [complaintsRes, departmentsRes] = await Promise.all([API.get('/complaints/all'), API.get('/departments')]);
-    setComplaints(complaintsRes.data);
+    setComplaints(sortComplaintsBySeverity(complaintsRes.data));
     setDepartments(departmentsRes.data);
   };
 

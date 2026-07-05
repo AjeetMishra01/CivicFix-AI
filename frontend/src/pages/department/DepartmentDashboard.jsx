@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { CheckCircle2, Clock3, FileText, MessageSquare, PlusCircle, Star } from 'lucide-react';
 import ThemeToggle from '../../components/common/ThemeToggle';
 import useTheme from '../../hooks/useTheme';
-import { formatStatus } from '../../utils/status';
+import { formatStatus, getSeverityValue, sortComplaintsBySeverity } from '../../utils/status';
 
 const DepartmentDashboard = () => {
   const { theme, toggleTheme } = useTheme();
@@ -14,11 +14,12 @@ const DepartmentDashboard = () => {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [showRemarkModal, setShowRemarkModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [severityFilter, setSeverityFilter] = useState('All');
   const [remark, setRemark] = useState('');
 
   const fetchData = async () => {
     const [complaintsRes, departmentsRes] = await Promise.all([API.get('/complaints'), API.get('/departments')]);
-    setComplaints(complaintsRes.data);
+    setComplaints(sortComplaintsBySeverity(complaintsRes.data));
     setDepartments(departmentsRes.data);
   };
 
@@ -47,10 +48,20 @@ const DepartmentDashboard = () => {
   }), [complaints]);
 
   const filteredComplaints = useMemo(() => {
-    if (statusFilter === 'all') return complaints;
-    if (statusFilter === 'pending') return complaints.filter((c) => c.status === 'submitted' || c.status === 'accepted');
-    return complaints.filter((c) => c.status === statusFilter);
-  }, [complaints, statusFilter]);
+    let nextComplaints = complaints;
+
+    if (statusFilter === 'pending') {
+      nextComplaints = complaints.filter((c) => c.status === 'submitted' || c.status === 'accepted');
+    } else if (statusFilter !== 'all') {
+      nextComplaints = complaints.filter((c) => c.status === statusFilter);
+    }
+
+    if (severityFilter !== 'All') {
+      nextComplaints = nextComplaints.filter((c) => getSeverityValue(c.severity) === severityFilter);
+    }
+
+    return nextComplaints;
+  }, [complaints, severityFilter, statusFilter]);
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8">
@@ -85,6 +96,16 @@ const DepartmentDashboard = () => {
           </div>
         </div>
 
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <span className="text-sm font-medium text-slate-600">Severity</span>
+          <select value={severityFilter} onChange={(e) => setSeverityFilter(e.target.value)} className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm">
+            <option>All</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+
         <div className="space-y-4">
           {filteredComplaints.map((complaint) => (
             <div key={complaint._id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm cursor-pointer transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-sm" onClick={() => setSelectedComplaint(complaint)}>
@@ -93,6 +114,9 @@ const DepartmentDashboard = () => {
                   <p className="text-sm text-civic-teal font-medium">{complaint.category}</p>
                   <h3 className="text-lg font-semibold text-slate-800">{complaint.title}</h3>
                   <p className="text-sm text-slate-600 mt-2">{complaint.description}</p>
+                  <div className="mt-2 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+                    Severity: {getSeverityValue(complaint.severity)}
+                  </div>
                 </div>
                 <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">{formatStatus(complaint.status)}</span>
               </div>

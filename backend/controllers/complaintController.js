@@ -20,6 +20,8 @@ const createComplaint = async (req, res) => {
       name: aiResponse.data.department
     });
 
+    const predictedSeverity=aiResponse.data.severity;
+
     if(!predictedDepartment){
       return res.status(404).json({message: "Predicted Department not found"});
     }
@@ -34,7 +36,8 @@ const createComplaint = async (req, res) => {
       longitude,
       imageUrl,
       citizen: req.user._id,
-      department: predictedDepartment._id
+      department: predictedDepartment._id,
+      severity: predictedSeverity
     });
 
     await ComplaintStatusHistory.create({

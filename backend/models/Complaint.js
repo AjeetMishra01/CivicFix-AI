@@ -17,6 +17,11 @@ const complaintSchema = new mongoose.Schema(
       enum: ['submitted', 'accepted', 'in-progress', 'resolved'],
       default: 'submitted'
     },
+    severity: {
+      type: String,
+      enum: ['High', 'Medium', 'Low'],
+      default: 'Low'
+    },
     assignedOfficer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     remarks: [{ type: String }],
     completionImageUrl: { type: String },

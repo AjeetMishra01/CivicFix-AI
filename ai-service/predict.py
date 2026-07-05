@@ -18,7 +18,7 @@ model = AutoModelForSequenceClassification.from_pretrained(
 
 model.eval()
 
-complaint = "The traffic signal at the junction is not working."
+complaint = "There is no water supply in our locality since yesterday."
 
 inputs = tokenizer(
     complaint,
@@ -40,4 +40,3 @@ predicted_department = le.inverse_transform([predicted_label])[0]
 
 print("Predicted Department:", predicted_department)
 
-print(le.classes_)

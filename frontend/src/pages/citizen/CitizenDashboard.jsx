@@ -7,7 +7,7 @@ import MapPicker, { geocodeAddress } from '../../components/common/MapPicker';
 import ThemeToggle from '../../components/common/ThemeToggle';
 import Toast from '../../components/common/Toast';
 import useTheme from '../../hooks/useTheme';
-import { formatStatus } from '../../utils/status';
+import { formatStatus, getResolutionTimeText, getSeverityValue, sortComplaintsBySeverity } from '../../utils/status';
 
 const CitizenDashboard = () => {
   const { theme, toggleTheme } = useTheme();
@@ -26,7 +26,7 @@ const CitizenDashboard = () => {
 
   const fetchComplaints = async () => {
     const res = await API.get('/complaints');
-    setComplaints(res.data);
+    setComplaints(sortComplaintsBySeverity(res.data));
   };
 
   useEffect(() => {
@@ -227,6 +227,8 @@ const CitizenDashboard = () => {
               <p><span className="font-medium">Location:</span> {selectedComplaint.location}</p>
               <p><span className="font-medium">Address:</span> {selectedComplaint.address || 'Not provided'}</p>
               <p><span className="font-medium">Status:</span> {formatStatus(selectedComplaint.status)}</p>
+              <p><span className="font-medium">Severity:</span> {getSeverityValue(selectedComplaint.severity)}</p>
+              <p><span className="font-medium">Estimated Resolution Time:</span> {getResolutionTimeText(selectedComplaint)}</p>
               <p><span className="font-medium">Department:</span> {selectedComplaint.department?.name || 'Not assigned'}</p>
               <p><span className="font-medium">Remarks:</span> {selectedComplaint.remarks?.join(', ') || 'No remarks yet'}</p>
               <p><span className="font-medium">Created:</span> {new Date(selectedComplaint.createdAt).toLocaleString()}</p>

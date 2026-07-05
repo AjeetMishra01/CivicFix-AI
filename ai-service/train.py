@@ -11,6 +11,8 @@ gemini_df= pd.read_csv("dataset/data_gemini.csv")
 
 combined_df = pd.concat([claude_df, gemini_df], ignore_index=True)
 
+new_df=pd.read_csv("dataset/combined_data_v1_2.csv")
+
 #print(combined_df.shape)
 
 #print(combined_df.info())
@@ -23,7 +25,7 @@ combined_df = pd.concat([claude_df, gemini_df], ignore_index=True)
 
 tokenizer=AutoTokenizer.from_pretrained("distilbert-base-uncased")
 
-complaints=combined_df["complaint"].tolist()
+complaints=new_df["complaint"].tolist()
 tokenized_dataset=tokenizer(complaints, padding=True, truncation=True)
 
 #print(type(tokenized_dataset))
@@ -32,14 +34,14 @@ tokenized_dataset=tokenizer(complaints, padding=True, truncation=True)
 #print(len(tokenized_dataset["attention_mask"]))
 
 le= LabelEncoder()
-combined_df["label"]=le.fit_transform(combined_df["department"])
+new_df["label"]=le.fit_transform(new_df["department"])
 
 #print(combined_df.head())
 
-combined_df["input_ids"] = tokenized_dataset["input_ids"]
-combined_df["attention_mask"] = tokenized_dataset["attention_mask"]
+new_df["input_ids"] = tokenized_dataset["input_ids"]
+new_df["attention_mask"] = tokenized_dataset["attention_mask"]
 
-dataset=Dataset.from_pandas(combined_df)
+dataset=Dataset.from_pandas(new_df)
 #print(dataset)
 
 dataset = dataset.train_test_split(test_size=0.2, seed=42)
@@ -55,8 +57,8 @@ test_dataset.set_format(type="torch", columns=columns)
 #print(len(test_dataset))
 
 model=AutoModelForSequenceClassification.from_pretrained(
-    "distilbert-base-uncased",
-    num_labels=10
+    "models/civicfix_department_model",
+    num_labels=len(le.classes_)
       )
 
 training_args=TrainingArguments(
