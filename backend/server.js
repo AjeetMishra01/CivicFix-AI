@@ -10,6 +10,7 @@ import authRoutes from './routes/authRoutes.js';
 import complaintRoutes from './routes/complaintRoutes.js';
 import departmentRoutes from './routes/departmentRoutes.js';
 import feedbackRoutes from './routes/feedbackRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 import User from './models/User.js';
 
 dotenv.config();
@@ -56,6 +57,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/departments', departmentRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 const startServer = async () => {
   await ensureDefaultAdmin();
