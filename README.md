@@ -6,9 +6,9 @@ An AI-powered civic complaint management system built using the MERN Stack, Fast
 
 CivicFix allows citizens to report civic issues such as potholes, garbage collection, water supply, electricity, sewage, traffic signals, etc.
 
-Instead of manually selecting the responsible department, an AI model automatically predicts the correct department from the complaint description.
+Instead of manually selecting the responsible department, AI models automatically predict the correct department and complaint severity from the complaint description.
 
-The complaint is then routed directly to the respective municipal department.
+The complaint is then routed directly to the respective municipal department along with its predicted severity level.
 
 ---
 
@@ -16,37 +16,42 @@ The complaint is then routed directly to the respective municipal department.
 
 ### Citizen Portal
 
-- Register/Login
-- Raise complaints
-- Upload complaint images
-- Interactive location picker
-- Automatic address detection
-- AI-based department prediction
-- Track complaint status
-- View department remarks
-- Give feedback after resolution
+* Register/Login
+* Raise complaints
+* Upload complaint images
+* Interactive location picker
+* Automatic address detection
+* AI-based department prediction
+* AI-based complaint severity prediction
+* Track complaint status
+* View department remarks
+* Give feedback after resolution
 
 ---
 
 ### Department Portal
 
-- Department-wise complaint dashboard
-- Accept complaints
-- Update complaint status
-- Add remarks
-- View complaint details
-- View uploaded complaint images
+* Department-wise complaint dashboard
+* Accept complaints
+* View AI-predicted complaint severity
+* Update complaint status
+* Add remarks
+* View complaint details
+* View uploaded complaint images
+* Receive broadcast messages from admin
 
 ---
 
 ### Admin Portal
 
-- Create departments
-- Create department employees
-- View all complaints
-- Assign department users
-- Delete departments
-- Delete department employees
+* Create departments
+* Create department employees
+* View all complaints
+* Assign department users
+* Delete departments
+* Delete department employees
+* Send broadcast messages to a specific department
+* Send broadcast messages to all departments
 
 ---
 
@@ -56,31 +61,41 @@ The AI service is built separately using **FastAPI**.
 
 ### Base Model
 
-- DistilBERT (`distilbert-base-uncased`)
+* DistilBERT (`distilbert-base-uncased`)
 
 ### Frameworks
 
-- Hugging Face Transformers
-- PyTorch
-- Scikit-learn
-- FastAPI
+* Hugging Face Transformers
+* PyTorch
+* Scikit-learn
+* FastAPI
 
-### Task
+### Tasks
 
-Multi-class text classification for automatic civic complaint routing.
+Multi-class text classification for:
+
+* Automatic civic complaint routing
+* Automatic complaint severity prediction
 
 ### Supported Departments
 
-- Electricity
-- Garbage Collection
-- Parks & Gardens
-- Public Transport
-- Roads & Potholes
-- Sewage & Drainage
-- Street Lighting
-- Traffic Signals
-- Water Supply
-- Other
+* Electricity
+* Garbage Collection
+* Parks & Gardens
+* Public Transport
+* Roads & Potholes
+* Sewage & Drainage
+* Street Lighting
+* Traffic Signals
+* Water Supply
+* Other
+
+### Supported Severity Levels
+
+* Low
+* Medium
+* High
+* Critical
 
 ---
 
@@ -88,25 +103,25 @@ Multi-class text classification for automatic civic complaint routing.
 
 ### Frontend
 
-- React
-- Tailwind CSS
-- Axios
-- Leaflet Maps
+* React
+* Tailwind CSS
+* Axios
+* Leaflet Maps
 
 ### Backend
 
-- Node.js
-- Express.js
-- MongoDB
-- JWT Authentication
-- Multer
+* Node.js
+* Express.js
+* MongoDB
+* JWT Authentication
+* Multer
 
 ### AI Service
 
-- FastAPI
-- Hugging Face Transformers
-- PyTorch
-- Scikit-learn
+* FastAPI
+* Hugging Face Transformers
+* PyTorch
+* Scikit-learn
 
 ---
 
@@ -164,15 +179,15 @@ uvicorn app:app --reload
 
 ## AI Model
 
-The trained model is **not included** in this repository because GitHub limits file sizes to 100 MB.
+The trained models are **not included** in this repository because GitHub limits file sizes to 100 MB.
 
 The repository contains:
 
-- Complete training pipeline
-- Dataset
-- FastAPI inference service
+* Complete training pipelines
+* Datasets
+* FastAPI inference service
 
-To generate the model:
+To generate the models:
 
 ```bash
 python train.py
@@ -186,18 +201,26 @@ python train.py
 
 ### Completed
 
-- Citizen Portal
-- Department Portal
-- Admin Portal
-- AI Department Prediction
-- Complaint Routing
-- Interactive Map
-- Complaint Status Tracking
-- Feedback System
+* Citizen Portal
+* Department Portal
+* Admin Portal
+* AI Department Prediction
+* AI Complaint Severity Prediction
+* Complaint Routing
+* Interactive Map
+* Complaint Status Tracking
+* Feedback System
+* Admin Broadcast Messaging System
 
 ---
 
 # Screenshots
+
+## Landing Page
+
+![Landing Page](screenshots/landingPage.png)
+
+---
 
 ## Citizen Dashboard
 
@@ -205,9 +228,9 @@ python train.py
 
 ---
 
-## Department Management
+## Analytics
 
-![Department Names](screenshots/department-names.png)
+![Analytics](screenshots/analytics.png)
 
 ---
 
@@ -227,14 +250,23 @@ python train.py
 
 ![Complaint](screenshots/map-picker.png)
 
+--
+
+## 🎥 Demo Video
+
+Watch the complete CivicFix AI demo to see the citizen complaint workflow, AI-powered department and severity prediction, department complaint management, admin controls, and broadcast messaging system.
+
+[![Watch CivicFix AI Demo](screenshots/landingPage.png)](https://youtu.be/lem5xfkDM_I)
+
+---
+
 ## Future Improvements (V2)
 
-- Complaint Priority Prediction
-- Duplicate Complaint Detection
-- AI Complaint Summarization
-- Analytics Dashboard
-- Email Notifications
-- Deployment on Cloud
+* Duplicate Complaint Detection
+* AI Complaint Summarization
+* Analytics Dashboard
+* Email Notifications
+* Deployment on Cloud
 
 ---
 

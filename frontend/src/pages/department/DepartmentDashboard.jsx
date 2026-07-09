@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import API from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
-import { 
-  Bell, CheckCircle2, Clock3, FileText, MessageSquare, Star, 
+import {
+  Bell, CheckCircle2, Clock3, FileText, MessageSquare, Star,
   X, AlertTriangle, ChevronRight, CornerDownRight, Check
 } from 'lucide-react';
 import DashboardLayout from '../../components/common/DashboardLayout';
@@ -30,7 +30,7 @@ const DepartmentDashboard = () => {
   useEffect(() => {
     fetchData();
     fetchNotifications();
-    
+
     // Close notifications on click outside
     const handleClickOutside = (event) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target)) {
@@ -87,8 +87,8 @@ const DepartmentDashboard = () => {
     return nextComplaints;
   }, [complaints, severityFilter, statusFilter]);
 
-  const departmentName = user?.department 
-    ? departments.find((d) => d._id === user.department)?.name 
+  const departmentName = user?.department
+    ? departments.find((d) => d._id === user.department)?.name
     : 'Department Workspace';
 
   const unreadNotifications = notifications.filter((item) => !item.readBy?.includes(user?._id));
@@ -135,7 +135,7 @@ const DepartmentDashboard = () => {
 
         {/* Notifications Dropdown Container */}
         <div className="relative" ref={notificationRef}>
-          <button 
+          <button
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 shadow-sm transition"
             onClick={() => setShowNotifications(!showNotifications)}
           >
@@ -162,13 +162,12 @@ const DepartmentDashboard = () => {
                   {notifications.map((notification) => {
                     const isRead = notification.readBy?.includes(user?._id);
                     return (
-                      <div 
-                        key={notification._id} 
-                        className={`rounded-xl border p-3 transition duration-150 ${
-                          isRead 
-                            ? 'border-slate-100 bg-slate-50/50 dark:border-slate-850 dark:bg-slate-950/20' 
+                      <div
+                        key={notification._id}
+                        className={`rounded-xl border p-3 transition duration-150 ${isRead
+                            ? 'border-slate-100 bg-slate-50/50 dark:border-slate-850 dark:bg-slate-950/20'
                             : 'border-brand-200/50 bg-brand-50/20 dark:border-brand-900/20 dark:bg-brand-950/10'
-                        }`}
+                          }`}
                       >
                         <div className="flex justify-between items-start gap-2">
                           <div>
@@ -176,8 +175,8 @@ const DepartmentDashboard = () => {
                             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{notification.message}</p>
                           </div>
                           {!isRead && (
-                            <button 
-                              className="text-[10px] font-bold text-brand-600 hover:underline shrink-0" 
+                            <button
+                              className="text-[10px] font-bold text-brand-600 hover:underline shrink-0"
                               onClick={() => markNotificationRead(notification._id)}
                             >
                               Mark read
@@ -198,48 +197,44 @@ const DepartmentDashboard = () => {
 
       {/* Stats/Filter Grid Tabs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <button 
-          className={`text-left rounded-2xl p-4 shadow-sm border transition flex flex-col justify-between ${
-            statusFilter === 'all' 
-              ? 'border-brand-500 bg-brand-50/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300' 
+        <button
+          className={`text-left rounded-2xl p-4 shadow-sm border transition flex flex-col justify-between ${statusFilter === 'all'
+              ? 'border-brand-500 bg-brand-50/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300'
               : 'border-slate-200/70 bg-white dark:bg-slate-900 hover:border-slate-350'
-          }`} 
+            }`}
           onClick={() => setStatusFilter('all')}
         >
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5"><FileText size={14} /> All Assigned</span>
           <p className="text-2xl font-black mt-2 text-slate-850 dark:text-slate-100">{stats.all}</p>
         </button>
 
-        <button 
-          className={`text-left rounded-2xl p-4 shadow-sm border transition flex flex-col justify-between ${
-            statusFilter === 'pending' 
-              ? 'border-brand-500 bg-brand-50/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300' 
+        <button
+          className={`text-left rounded-2xl p-4 shadow-sm border transition flex flex-col justify-between ${statusFilter === 'pending'
+              ? 'border-brand-500 bg-brand-50/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300'
               : 'border-slate-200/70 bg-white dark:bg-slate-900 hover:border-slate-355'
-          }`} 
+            }`}
           onClick={() => setStatusFilter('pending')}
         >
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5"><FileText size={14} /> Pending</span>
           <p className="text-2xl font-black mt-2 text-slate-850 dark:text-slate-100">{stats.pending}</p>
         </button>
 
-        <button 
-          className={`text-left rounded-2xl p-4 shadow-sm border transition flex flex-col justify-between ${
-            statusFilter === 'in-progress' 
-              ? 'border-brand-500 bg-brand-50/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300' 
+        <button
+          className={`text-left rounded-2xl p-4 shadow-sm border transition flex flex-col justify-between ${statusFilter === 'in-progress'
+              ? 'border-brand-500 bg-brand-50/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300'
               : 'border-slate-200/70 bg-white dark:bg-slate-900 hover:border-slate-355'
-          }`} 
+            }`}
           onClick={() => setStatusFilter('in-progress')}
         >
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5"><Clock3 size={14} /> In Progress</span>
           <p className="text-2xl font-black mt-2 text-slate-850 dark:text-slate-100">{stats.progress}</p>
         </button>
 
-        <button 
-          className={`text-left rounded-2xl p-4 shadow-sm border transition flex flex-col justify-between ${
-            statusFilter === 'resolved' 
-              ? 'border-brand-500 bg-brand-50/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300' 
+        <button
+          className={`text-left rounded-2xl p-4 shadow-sm border transition flex flex-col justify-between ${statusFilter === 'resolved'
+              ? 'border-brand-500 bg-brand-50/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300'
               : 'border-slate-200/70 bg-white dark:bg-slate-900 hover:border-slate-355'
-          }`} 
+            }`}
           onClick={() => setStatusFilter('resolved')}
         >
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5"><CheckCircle2 size={14} /> Resolved</span>
@@ -249,10 +244,10 @@ const DepartmentDashboard = () => {
 
       {/* Filter toolbar */}
       <div className="mb-6 flex items-center gap-3 bg-white dark:bg-slate-900 rounded-xl px-4 py-3 border border-slate-200/60 dark:border-slate-800/60 max-w-sm">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Triage Severity:</span>
-        <select 
-          value={severityFilter} 
-          onChange={(e) => setSeverityFilter(e.target.value)} 
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Severity:</span>
+        <select
+          value={severityFilter}
+          onChange={(e) => setSeverityFilter(e.target.value)}
           className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 outline-none cursor-pointer flex-1"
         >
           <option>All</option>
@@ -268,8 +263,8 @@ const DepartmentDashboard = () => {
           filteredComplaints.map((complaint) => {
             const styles = getSeverityStyles(complaint.severity);
             return (
-              <div 
-                key={complaint._id} 
+              <div
+                key={complaint._id}
                 className={`rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm hover:shadow-md transition duration-150 flex flex-col md:flex-row justify-between items-start md:items-center gap-5 cursor-pointer ${styles.border} ${styles.bg}`}
                 onClick={() => setSelectedComplaint(complaint)}
               >
@@ -283,7 +278,7 @@ const DepartmentDashboard = () => {
                       {getSeverityValue(complaint.severity)} Severity
                     </span>
                   </div>
-                  
+
                   <h3 className="text-base font-bold text-slate-850 dark:text-slate-100 leading-snug line-clamp-1">{complaint.title}</h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">{complaint.description}</p>
                 </div>
@@ -293,28 +288,28 @@ const DepartmentDashboard = () => {
                   <span className={`rounded-full border px-2.5 py-0.5 text-3xs font-extrabold uppercase ${getStatusBadgeStyle(complaint.status)}`}>
                     {formatStatus(complaint.status)}
                   </span>
-                  
+
                   {complaint.status !== 'resolved' && (
                     <div className="flex items-center gap-2">
-                      <button 
+                      <button
                         className="rounded-lg bg-brand-600 hover:bg-brand-700 text-white px-3 py-1.5 text-2xs font-extrabold transition shadow-sm"
                         onClick={() => handleStatus(complaint._id, 'accepted')}
                       >
                         Accept
                       </button>
-                      <button 
+                      <button
                         className="rounded-lg bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 text-2xs font-extrabold transition shadow-sm"
                         onClick={() => handleStatus(complaint._id, 'in-progress')}
                       >
                         Start Work
                       </button>
-                      <button 
+                      <button
                         className="rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 text-2xs font-extrabold transition shadow-sm"
                         onClick={() => handleStatus(complaint._id, 'resolved')}
                       >
                         Resolve
                       </button>
-                      <button 
+                      <button
                         className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-1.5 text-2xs font-extrabold hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-650 dark:text-slate-300 transition"
                         onClick={() => { setSelectedComplaint(complaint); setShowRemarkModal(true); }}
                       >
@@ -339,9 +334,9 @@ const DepartmentDashboard = () => {
       {selectedComplaint && !showRemarkModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in-up">
           <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto border border-slate-200 dark:border-slate-800 shadow-2xl relative">
-            
-            <button 
-              className="absolute right-4 top-4 p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-850 transition" 
+
+            <button
+              className="absolute right-4 top-4 p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-850 transition"
               onClick={() => setSelectedComplaint(null)}
             >
               <X size={20} />
@@ -355,7 +350,7 @@ const DepartmentDashboard = () => {
             </div>
 
             <p className="text-sm text-slate-600 dark:text-slate-350 mt-4 leading-relaxed">{selectedComplaint.description}</p>
-            
+
             {/* Split specifications */}
             <div className="grid md:grid-cols-2 gap-6 mt-6 items-start">
               {/* Technical Specifications */}
@@ -444,26 +439,26 @@ const DepartmentDashboard = () => {
             {/* Action Bar */}
             {selectedComplaint.status !== 'resolved' && (
               <div className="mt-8 pt-5 border-t border-slate-100 dark:border-slate-850 flex flex-wrap items-center gap-3">
-                <button 
-                  className="rounded-xl bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 text-xs font-bold transition shadow-sm" 
+                <button
+                  className="rounded-xl bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 text-xs font-bold transition shadow-sm"
                   onClick={() => { handleStatus(selectedComplaint._id, 'accepted'); setSelectedComplaint(null); }}
                 >
                   Accept complaint
                 </button>
-                <button 
-                  className="rounded-xl bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 text-xs font-bold transition shadow-sm" 
+                <button
+                  className="rounded-xl bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 text-xs font-bold transition shadow-sm"
                   onClick={() => { handleStatus(selectedComplaint._id, 'in-progress'); setSelectedComplaint(null); }}
                 >
                   Start resolution
                 </button>
-                <button 
-                  className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 text-xs font-bold transition shadow-sm" 
+                <button
+                  className="rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 text-xs font-bold transition shadow-sm"
                   onClick={() => { handleStatus(selectedComplaint._id, 'resolved'); setSelectedComplaint(null); }}
                 >
                   Resolve complaint
                 </button>
-                <button 
-                  className="rounded-xl border border-slate-200 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-250 px-4 py-2 text-xs font-bold transition" 
+                <button
+                  className="rounded-xl border border-slate-200 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-250 px-4 py-2 text-xs font-bold transition"
                   onClick={() => setShowRemarkModal(true)}
                 >
                   Append remark
@@ -480,25 +475,25 @@ const DepartmentDashboard = () => {
           <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 w-full max-w-md border border-slate-200 dark:border-slate-800 shadow-2xl relative">
             <h2 className="text-lg font-bold text-slate-850 dark:text-white font-heading">Append Remark</h2>
             <p className="text-2xs text-slate-500 mt-0.5">Your comments are logged on the ticket and visible to citizen auditors.</p>
-            
-            <textarea 
+
+            <textarea
               rows="3"
-              className="w-full border border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 bg-white dark:bg-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/10 text-slate-850 dark:text-white mt-4" 
-              placeholder="e.g. Sent repair truck to inspect coordinates, completion estimated by 3pm." 
-              value={remark} 
-              onChange={(e) => setRemark(e.target.value)} 
+              className="w-full border border-slate-200 dark:border-slate-800 rounded-xl px-3.5 py-2.5 bg-white dark:bg-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500/10 text-slate-850 dark:text-white mt-4"
+              placeholder="e.g. Sent repair truck to inspect coordinates, completion estimated by 3pm."
+              value={remark}
+              onChange={(e) => setRemark(e.target.value)}
             />
 
             <div className="mt-5 flex justify-end gap-2.5">
-              <button 
-                className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-350 text-xs font-bold hover:bg-slate-50 transition" 
+              <button
+                className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-350 text-xs font-bold hover:bg-slate-50 transition"
                 onClick={() => { setShowRemarkModal(false); setRemark(''); }}
               >
                 Cancel
               </button>
-              <button 
-                disabled={!remark.trim()} 
-                className="px-4 py-2 rounded-lg bg-brand-650 text-white text-xs font-bold disabled:cursor-not-allowed disabled:opacity-50 transition" 
+              <button
+                disabled={!remark.trim()}
+                className="px-4 py-2 rounded-lg bg-brand-650 text-white text-xs font-bold disabled:cursor-not-allowed disabled:opacity-50 transition"
                 onClick={() => { handleStatus(selectedComplaint._id, selectedComplaint.status, remark); setShowRemarkModal(false); setSelectedComplaint(null); }}
               >
                 Save Comment
